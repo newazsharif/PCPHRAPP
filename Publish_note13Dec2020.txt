@@ -1,0 +1,14 @@
+1. Update procedure isp_DishCustomerBillCollection
+2. update script DishBillCollectionModified
+3. tblDishBillCollection/tblInternetBillCollection make CustomerSL,PageNo nullable.
+4. update procedure usp_updateDishCollectionStatus.
+5. update script  UpdateDishCollection.js
+6. _updateCollection view file update.
+7. alter [dbo].[rsp_getDishBillPaymentHistory] --order by collectionId desc
+8. alter [dbo].[rsp_getInternetBillPaymentHistory] --order by collectionId desc
+9. update DishCustomer.js
+10. update InternetCustomer.js
+11. Have to prepare a bill upgrade report
+12. Add discount in report where necessary.
+13. Format fixing in due report.
+14. Add Host information in customer Payment history.
