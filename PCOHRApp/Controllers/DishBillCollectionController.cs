@@ -224,5 +224,39 @@ namespace PCOHRApp.Controllers
                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
            }
        }
+
+       [HttpPost]
+       public JsonResult GetBillCollectionListBySerial(string pageNo, string serialNo, int yearID)
+       {
+           try
+           {
+               List<BillCollectionVM> _objList = _dishBillCollectionDA.GetBillCollectionListBySerial(pageNo, serialNo, yearID).OrderByDescending(x => x.collectionId).ToList();
+               int totalRows = _objList.Count;
+               int start = Convert.ToInt32(Request["start"]);
+               int length = Convert.ToInt32(Request["length"]);
+               string searchValue = Request["search[value]"];
+               string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+               string sortDirection = Request["order[0][dir]"];
+
+               if (!string.IsNullOrEmpty(searchValue))
+               {
+                   _objList = _objList.Where(x => x.customerSerial.ToLower().Contains(searchValue.ToLower())
+                       || x.customerSerial.ToLower().Contains(searchValue.ToLower())
+                       || x.customerName.ToLower().Contains(searchValue.ToLower())
+                       || x.fromMonthYear.ToLower().Contains(searchValue.ToLower())
+                       || x.toMonthYear.ToLower().Contains(searchValue.ToLower())
+                       || x.voucherNo.ToLower().Contains(searchValue.ToLower())).ToList();
+               }
+               //_objList = _objList.OrderBy(sortColumnName + " " + sortDirection).ToList<CustomerVM>();
+               _objList = _objList.Skip(start).Take(length).ToList();
+
+               return Json(new { success = true, data = _objList, draw = Request["draw"], recordsTotal = totalRows, recordsFiltered = totalRows }, JsonRequestBehavior.AllowGet);
+               //return Json(new { success = true, data = _objList }, JsonRequestBehavior.AllowGet);
+           }
+           catch (Exception ex)
+           {
+               return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+           }
+       }
     }
 }

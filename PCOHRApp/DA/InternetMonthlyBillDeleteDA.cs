@@ -12,17 +12,22 @@ namespace PCOHRApp.DA
     public class InternetMonthlyBillDeleteDA
     {
         string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
         internal string InternetMonthlyBillDelete(BillCollectionVM _obj)
         {
             string result = "";
+            DataTable tvp = new DataTable();
+            tvp.Columns.Add(new DataColumn("id", typeof(int)));
+            foreach (var id in _obj.billDetailsIds)
+            {
+                tvp.Rows.Add(id);
+            }
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("isp_InternetMonthlyBillDelete", con);
                 cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@cid", _obj.cid);                
-                cmd.Parameters.AddWithValue("@fromMonth", _obj.fromMonth);
-                cmd.Parameters.AddWithValue("@toMonth", _obj.toMonth);               
+                cmd.Parameters.AddWithValue("@cid", _obj.cid);
+                cmd.Parameters.AddWithValue("@billCollectionDetailIds", tvp);
                 cmd.Parameters.AddWithValue("@createdBy", _obj.createdBy);
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -35,7 +40,7 @@ namespace PCOHRApp.DA
             }
             return result;
         }
-
+        
         internal int CheckPassword(BillCollectionVM _obj, string PageName)
         {
             int result = 0;

@@ -124,7 +124,7 @@ namespace PCOHRApp.Controllers
             return View();
         }
 
-        public ActionResult ShowReport(string fileType,string reportType, int? cid, int? receivedBy, int? collectedBy, bool? isActive, int? zoneId, string fromDate = "", string toDate = "", string ctype = "",string month = "", int year = 0,int pageNo = 0)
+        public ActionResult ShowReport(string fileType,string reportType, int? cid, int? receivedBy, int? collectedBy, bool? isActive, int? zoneId, int? custSerialPrefixId, int? assignedUserId,int? hostId,int? dueReportStatus, int?activeStatus, string fromDate = "", string toDate = "", string ctype = "",string month = "", int year = 0,int pageNo = 0)
         {
             LocalReport lr = new LocalReport();
             if (reportType == "AllDishCustomerDetails")
@@ -135,7 +135,7 @@ namespace PCOHRApp.Controllers
                 reportParameters.Add(new ReportParameter("isActive", isActive == null ? null : isActive.ToString()));
                 reportParameters.Add(new ReportParameter("zoneId",zoneId + ""));
                 lr.SetParameters(reportParameters);
-                var dataList = _da.GetDishCustomerList(isActive, zoneId?? 0, 0) ?? new List<CustomerVM>();
+                var dataList = _da.GetDishCustomerList(isActive, zoneId?? 0, 0, custSerialPrefixId ?? 0, assignedUserId ?? 0, hostId ?? 0) ?? new List<CustomerVM>();
                 rd = new ReportDataSource("CustomerDataSet", dataList);
                 lr.DataSources.Add(rd);
 
@@ -148,7 +148,7 @@ namespace PCOHRApp.Controllers
                 reportParameters.Add(new ReportParameter("isActive", isActive == null ? null : isActive.ToString()));
                 reportParameters.Add(new ReportParameter("zoneId", zoneId + ""));
                 lr.SetParameters(reportParameters);
-                var dataList = _da.GetInternetCustomerList(isActive, zoneId ?? 0, 0) ?? new List<CustomerVM>();
+                var dataList = _da.GetInternetCustomerList(isActive, zoneId ?? 0, 0, custSerialPrefixId ?? 0, assignedUserId ?? 0, hostId ?? 0) ?? new List<CustomerVM>();
                 rd = new ReportDataSource("CustomerDataSet", dataList);
                 lr.DataSources.Add(rd);
             }
@@ -224,7 +224,7 @@ namespace PCOHRApp.Controllers
                 reportParameters.Add(new ReportParameter("zoneId", zoneId + ""));
 
                 lr.SetParameters(reportParameters);
-                var dataList = _da.GetDishCustomerDue(zoneId ?? 0) ?? new List<PCOHRApp.Models.BillCollectionVM>();
+                var dataList = _da.GetDishCustomerDue(zoneId ?? 0, custSerialPrefixId ?? 0, assignedUserId ?? 0, hostId??0,activeStatus??0,dueReportStatus??0) ?? new List<PCOHRApp.Models.BillCollectionVM>();
 
                 lr.DataSources.Clear();
                 ReportDataSource rds = new ReportDataSource("CollectionDataSet", dataList);
@@ -240,7 +240,7 @@ namespace PCOHRApp.Controllers
                 reportParameters.Add(new ReportParameter("zoneId", zoneId + ""));
 
                 lr.SetParameters(reportParameters);
-                var dataList = _da.GetInternetCustomerDue(zoneId ?? 0) ?? new List<PCOHRApp.Models.BillCollectionVM>();
+                var dataList = _da.GetInternetCustomerDue(zoneId ?? 0, custSerialPrefixId ?? 0, assignedUserId ?? 0, hostId ?? 0,activeStatus??0,dueReportStatus??0) ?? new List<PCOHRApp.Models.BillCollectionVM>();
 
                 lr.DataSources.Clear();
                 ReportDataSource rds = new ReportDataSource("CollectionDataSet", dataList);

@@ -116,7 +116,7 @@ function onReqTypeChanged() {
         $('.shiftingRow').show();
         $('.disconnectRow').hide();
         $('#updatedMonthlyBillFormGroup').hide();
-        $('#requestChargeFormGroup').hide();
+        $('#requestChargeFormGroup').show();
        
     }
     else if(text == 'Discontinue'){

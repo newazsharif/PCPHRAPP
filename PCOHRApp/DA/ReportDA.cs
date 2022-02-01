@@ -13,7 +13,7 @@ namespace PCOHRApp.DA
     {
         string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        public List<CustomerVM> GetDishCustomerList(bool? isActive, int zoneId, int cid)
+        public List<CustomerVM> GetDishCustomerList(bool? isActive, int zoneId, int cid,int custSerialPrefixId, int assignedUserId, int hostId)
         {
             DataTable dt = new DataTable();
             List<CustomerVM> userList = new List<CustomerVM>();
@@ -24,6 +24,9 @@ namespace PCOHRApp.DA
                 cmd.Parameters.AddWithValue("@isActive", isActive);
                 cmd.Parameters.AddWithValue("@zoneId", zoneId);
                 cmd.Parameters.AddWithValue("@cid", cid);
+                cmd.Parameters.AddWithValue("@custSerialPrefixId", custSerialPrefixId);
+                cmd.Parameters.AddWithValue("@assignedUserId", assignedUserId);
+                cmd.Parameters.AddWithValue("@hostId", hostId);
                 con.Open();
                 var da = new SqlDataAdapter(cmd);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -63,7 +66,7 @@ namespace PCOHRApp.DA
                         }).ToList();
             return userList;
         }
-        public List<CustomerVM> GetInternetCustomerList(bool? isActive, int zoneId, int cid)
+        public List<CustomerVM> GetInternetCustomerList(bool? isActive, int zoneId, int cid,int custSerialPrefixId, int assignedUserId, int hostId)
         {
             DataTable dt = new DataTable();
             List<CustomerVM> userList = new List<CustomerVM>();
@@ -74,6 +77,9 @@ namespace PCOHRApp.DA
                 cmd.Parameters.AddWithValue("@isActive", isActive);
                 cmd.Parameters.AddWithValue("@zoneId", zoneId);
                 cmd.Parameters.AddWithValue("@cid", cid);
+                cmd.Parameters.AddWithValue("@custSerialPrefixId", custSerialPrefixId);
+                cmd.Parameters.AddWithValue("@assignedUserId", assignedUserId);
+                cmd.Parameters.AddWithValue("@hostId", hostId);
                 con.Open();
                 var da = new SqlDataAdapter(cmd);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -290,7 +296,7 @@ namespace PCOHRApp.DA
                         }).ToList();
             return billList;
         }
-        public List<BillCollectionVM> GetInternetCustomerDue(int zoneId)
+        public List<BillCollectionVM> GetInternetCustomerDue(int zoneId, int custSerialPrefixId, int assignedUserId, int hostId, int activeStatus, int dueReportStatus)
         {
             DataTable dt = new DataTable();
             List<BillCollectionVM> dueList = new List<BillCollectionVM>();
@@ -299,6 +305,11 @@ namespace PCOHRApp.DA
                 SqlCommand cmd = new SqlCommand("rsp_getInternetCustomerDue", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                cmd.Parameters.AddWithValue("@custSerialPrefixId", custSerialPrefixId);
+                cmd.Parameters.AddWithValue("@assignedUserId", assignedUserId);
+                cmd.Parameters.AddWithValue("@hostId", hostId);
+                cmd.Parameters.AddWithValue("@ActiveStatus", activeStatus);
+                cmd.Parameters.AddWithValue("@DiscoutinueStatus", dueReportStatus);
                 con.Open();
                 var da = new SqlDataAdapter(cmd);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -324,7 +335,7 @@ namespace PCOHRApp.DA
                         }).ToList();
             return dueList;
         }
-        public List<BillCollectionVM> GetDishCustomerDue(int zoneId)
+        public List<BillCollectionVM> GetDishCustomerDue(int zoneId, int custSerialPrefixId, int assignedUserId, int hostId, int activeStatus,int dueReportStatus)
         {
             DataTable dt = new DataTable();
             List<BillCollectionVM> dueList = new List<BillCollectionVM>();
@@ -333,6 +344,11 @@ namespace PCOHRApp.DA
                 SqlCommand cmd = new SqlCommand("rsp_getDishCustomerDue", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                cmd.Parameters.AddWithValue("@custSerialPrefixId", custSerialPrefixId);
+                cmd.Parameters.AddWithValue("@assignedUserId", assignedUserId);
+                cmd.Parameters.AddWithValue("@hostId", hostId);
+                cmd.Parameters.AddWithValue("@ActiveStatus", activeStatus);
+                cmd.Parameters.AddWithValue("@DiscoutinueStatus", dueReportStatus);
                 con.Open();
                 var da = new SqlDataAdapter(cmd);
                 cmd.CommandType = CommandType.StoredProcedure;

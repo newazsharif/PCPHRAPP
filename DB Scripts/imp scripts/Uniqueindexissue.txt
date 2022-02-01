@@ -1,0 +1,26 @@
+drop index [IX_tblDishBillCollection_PageNo_CustomerSL_CollectionYear] on [dbo].[tblDishBillCollection]
+(
+
+/****** Object:  Index [IX_tblDishBillCollection_PageNo_CustomerSL_CollectionYear]    Script Date: 12/29/2021 9:42:16 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblDishBillCollection_PageNo_CustomerSL_CollectionYear] ON [dbo].[tblDishBillCollection]
+(
+	[pageNo] ASC,
+	[customerSL] ASC,
+	[collectionYear] ASC
+)
+where (pageno is not null) and (customerSL is not null)
+
+
+
+
+drop index [IX_tblInternetBillCollection_PageNo_CustomerSL_CollectionYear] on [dbo].[tblInternetBillCollection]
+(
+
+/****** Object:  Index [IX_tblDishBillCollection_PageNo_CustomerSL_CollectionYear]    Script Date: 12/29/2021 9:42:16 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_tblInternetBillCollection_PageNo_CustomerSL_CollectionYear] ON [dbo].[tblInternetBillCollection]
+(
+	[pageNo] ASC,
+	[customerSL] ASC,
+	[collectionYear] ASC
+)
+where (pageno is not null) and (customerSL is not null)

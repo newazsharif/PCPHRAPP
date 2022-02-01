@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿/// <reference path="DishBillCollectionModified.js" />
+$(document).ready(function () {
     loadInitialization();
     HideFeeFields();
 });
@@ -139,6 +140,11 @@ $('#connFeeId,#reConnFeeId,#otherFeeId,#monFeeId,#shiftingFeeId,#discountId,#adv
     calculateAmount();
 });
 
+$("input[name='inlineRadioOptions']").click(function () {
+    clearUI();
+    loadInitialization();
+});
+
 function clearUI() {
     $('#customerId').val('0');
     $('#connFeeId').val('0');
@@ -156,8 +162,8 @@ function clearUI() {
     $('#advanceId').val('0');
     $('#custSLId').val('');
     $('#pageNoId').val('');
-    $('#collectedById').val('0');
-    $('#receivedById').val('0');
+    //$('#collectedById').val('0');
+   // $('#receivedById').val('0');
     $('#customerNameId').val('');
     $('#addressNameId').val('');
     $('#hostNameId').val('');
@@ -165,11 +171,15 @@ function clearUI() {
     $('#assignedUserNameId').val('');
     $('#connectionMonthId').val('');
     $('#monthlyBillId').val('');
+    $('#lblCusAddBillForTop').text('');
+    $('#lblMonthlyBillForTop').text('');
+    $('#lblEntryDateForTop').text('');
+    $('#lblOnuMacForTop').text('');
     $('#customerId').trigger('change');
     $('#fromMonthId').trigger('change');
     $('#toMonthId').trigger('change');
-    $('#collectedById').trigger('change');
-    $('#receivedById').trigger('change');
+   // $('#collectedById').trigger('change');
+   // $('#receivedById').trigger('change');
     $('#monthlyDueListPanel').empty();
     $('#connFeeDueId').text('');
     $('#reconnFeeDueId').text('');
@@ -224,7 +234,7 @@ function loadInitialization() {
     $('.customerBillForm').show();
     $('#customerId').select2({
         ajax: {
-            url: '/InternetCustomer/GetCustomerListForDropdown',
+            url: '/InternetCustomer/GetCustomerListForDropdown?searchBy=' + $("input[name='inlineRadioOptions']:checked").val(),
             data: function (params) {
                 var query = {
                     search: params.term,
@@ -289,7 +299,10 @@ function changeCustomer() {
             $('#zoneNameId').val(data.data.zoneName);
             $('#assignedUserNameId').val(data.data.assignedUserName);
             $('#monthlyBillId').val(data.data.monthBill);
-
+            $('#lblCusAddBillForTop').text(data.data.customerAddress);
+            $('#lblMonthlyBillForTop').text(data.data.monthBill);
+            $('#lblEntryDateForTop').text(data.data.EntryDateString);
+            $('#lblOnuMacForTop').text(data.data.onuMCId);
             $('#connectionMonthId').val(data.data.connMonth == '0' ? '' : data.data.connMonth + ',' + (data.data.connYearName == 'null' ? '' : data.data.connYearName));
         });
         $.get('/InternetBillCollection/GetPreviousInfoList/' + $('#customerId').val(), function (data) {
@@ -306,7 +319,7 @@ function changeCustomer() {
             $.each(data.data, function (k, v) {
                 if (v.requestName === "Reconnect") {
                     $('#reconnFeeDueId').text('Reconn Fee Due : ' + v.transactionAmount);
-                    $('.reConnFeeFormId').show();
+                    $('.reConnFeeFrmId').show();
                 }
                 else if (v.collectionType === "Connection Fee") {
                     $('#connFeeDueId').text('Connection Fee Due : ' + v.transactionAmount);
@@ -329,7 +342,8 @@ function changeCustomer() {
 
             });
             if (totalMonthlyDue != "0") {
-                $('#monthlyFeeDueId').text('Monthly Bill : ' + totalMonthlyDue);
+                //$('#monthlyFeeDueId').text('Monthly Bill : ' + totalMonthlyDue);
+                $('#monthlyFeeDueId').text('Total Month Bill : ' + totalMonthlyDue);
             }
             $('#totalDueId').text(totalDue);
             if (data.data.length > 0) {
@@ -406,7 +420,7 @@ function LoadBillDatatable() {
                 "data": null,
                 "className": "center",
                 render: function (data, type, row) {
-                    return 'SL-' + data.pageNo + '/' + data.customerSL;
+                    return 'SL-' + data.customerSL + '/' + data.pageNo;
                 }
 
             },
@@ -414,14 +428,14 @@ function LoadBillDatatable() {
             { "data": "customerSerial", "autoWidth": true },
             { "data": "customerName", "autoWidth": true },
             { "data": "connFee", "autoWidth": true },
-            { "data": "reConnFee", "autoWidth": true },
+            { "data": "collectedDateString", "autoWidth": true },           
             { "data": "fromMonthYear", "autoWidth": true },
             { "data": "toMonthYear", "autoWidth": true },
             { "data": "monthlyFee", "autoWidth": true },
             { "data": "shiftingCharge", "autoWidth": true },
             { "data": "netAmount", "autoWidth": true },
             { "data": "rcvAmount", "autoWidth": true },
-            { "data": "collectedDateString", "autoWidth": true },
+            { "data": "reConnFee", "autoWidth": true },
         ],
         "serverSide": true,
         "order": [1, "asc"],

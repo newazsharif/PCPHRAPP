@@ -28,6 +28,10 @@ namespace PCOHRApp.Controllers
             try
             {
                 _obj.createdBy = Convert.ToInt32(Session["userId"]);
+                if (_obj.EntryDateString != "" && _obj.EntryDateString != null)
+                {
+                    _obj.EntryDate = DateTime.ParseExact(_obj.EntryDateString, "dd/MM/yyyy", null);
+                }
                 string result = _internetCustomerDA.InsertOrUpdateCustomer(_obj);
                 return Json(new { success = true, message = "Data Saved Serial Number is " + result }, JsonRequestBehavior.AllowGet);
             }
@@ -129,18 +133,49 @@ namespace PCOHRApp.Controllers
             return Json(new { success = false }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetCustomerListForDropdown(string search, int page, int selectedId)
+        public JsonResult GetCustomerListForDropdown(string search, int page, int selectedId, string searchBy = "")
         {
             try
             {
-                var _objListAll = _internetCustomerDA.GetCustomerList().Where(x => x.isActive && ((search == null || search == "") || x.customerId.ToLower().Contains(search.ToLower())
-                    || x.customerSerial.ToLower().Contains(search.ToLower())
-                    || x.customerName.ToLower().Contains(search.ToLower())
-                    || x.customerPhone.ToLower().Contains(search.ToLower()))).OrderByDescending(x => x.hostId).Select(x => new
+                List<DropdownVM> _objListAll = new List<DropdownVM>();
+                if (searchBy.ToLower() == "card")
+                {
+                    _objListAll = _internetCustomerDA.GetCustomerList().Where(x => x.isActive && ((search == null || search == "") || x.customerId.ToLower().StartsWith(search.ToLower())
+                    || x.customerSerial.ToLower().StartsWith(search.ToLower()))).Select(x => new DropdownVM
                     {
                         id = x.id,
                         text = x.customerSerial + "#" + x.customerName + "#" + x.customerPhone,
                     }).ToList();
+                }
+                else if (searchBy.ToLower() == "name")
+                {
+                    _objListAll = _internetCustomerDA.GetCustomerList().Where(x => x.isActive && ((search == null || search == "")
+                    || x.customerName.ToLower().Contains(search.ToLower()))).Select(x => new DropdownVM
+                    {
+                        id = x.id,
+                        text = x.customerSerial + "#" + x.customerName + "#" + x.customerPhone,
+                    }).ToList();
+                }
+                else if (searchBy.ToLower() == "mobile")
+                {
+                    _objListAll = _internetCustomerDA.GetCustomerList().Where(x => x.isActive && ((search == null || search == "")
+                    || x.customerPhone.ToLower().Contains(search.ToLower()))).Select(x => new DropdownVM
+                    {
+                        id = x.id,
+                        text = x.customerSerial + "#" + x.customerName + "#" + x.customerPhone,
+                    }).ToList();
+                }
+                else
+                {
+                    _objListAll = _internetCustomerDA.GetCustomerList().Where(x => x.isActive && ((search == null || search == "") || x.customerId.ToLower().Contains(search.ToLower())
+                    || x.customerSerial.ToLower().Contains(search.ToLower())
+                    || x.customerName.ToLower().Contains(search.ToLower())
+                    || x.customerPhone.ToLower().Contains(search.ToLower()))).OrderByDescending(x => x.hostId).Select(x => new DropdownVM
+                    {
+                        id = x.id,
+                        text = x.customerSerial + "#" + x.customerName + "#" + x.customerPhone,
+                    }).ToList();
+                }
 
                 if (_objListAll.Count > page * 10)
                 {
@@ -167,6 +202,7 @@ namespace PCOHRApp.Controllers
                 return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+        
 
     }
 }

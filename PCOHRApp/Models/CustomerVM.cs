@@ -40,5 +40,8 @@ namespace PCOHRApp.Models
 		public int createdBy { get; set; }
         public DateTime createdDate { get; set; }
         public string Password { get; set; }
+        public string EntryDateString { set; get; }
+        public DateTime? EntryDate { set; get; }
+        public string onuMCId { set; get; }
     }
 }

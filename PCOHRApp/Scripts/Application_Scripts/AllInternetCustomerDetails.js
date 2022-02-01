@@ -18,8 +18,11 @@ $('#btnWordId').click(function () {
 function GenerateRDLC(fileType) {
     var activeStatus = $('#activeStatusId').val() == "" ? null : $('#activeStatusId').val() == '1' ? true : false;
     var zoneId = $('#zoneId').val();
-    var reportType = 'AllInternetCustomerDetails';
-    var viewURL = '/CableReport/ShowReport?fileType=' + fileType + '&isActive=' + activeStatus + '&zoneId=' + zoneId + "&reportType=" + reportType;
+    var custSerialPrefixId = $('#customerSerialPrefixId').val();
+    var assignedUserId = $('#assignedUserId').val();
+    var hostId = $('#hostId').val();
+    var reportType = 'AllInternetCustomerDetails';  
+    var viewURL = '/CableReport/ShowReport?fileType=' + fileType + '&isActive=' + activeStatus + '&zoneId=' + zoneId + '&custSerialPrefixId=' + custSerialPrefixId + '&assignedUserId=' + assignedUserId + '&hostId=' + hostId + "&reportType=" + reportType;
     $.fancybox(
 		{
 		    'title': 'Report Window',
@@ -54,5 +57,39 @@ function loadInitialization() {
         $('#zoneId').select2({
             data: zones
         });
+    });
+
+
+    var customerSerials = []
+    $.get('/Dropdown/GetCustomerSerialList', function (data) {
+        customerSerials = data.data;
+        $('#customerSerialPrefixId').select2({
+            data: customerSerials
+        });
+    });
+
+    var assignedUsers = []
+    $.get('/Account/GetUserDropdownList', function (data) {
+        assignedUsers = data.data;
+        $('#assignedUserId').select2({
+            data: assignedUsers
+        });
+    });
+
+    var hosts = [];
+    $('#hostId').select2({
+        ajax: {
+            url: '/Host/GetHostListForDropdown',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    page: params.page || 1,
+                    selectedId: 0
+                }
+                return query
+            }
+
+
+        }
     });
 }

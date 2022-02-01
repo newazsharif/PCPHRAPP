@@ -37,8 +37,8 @@ $('#btnSaveId').click(function () {
                 inputData[i] = {};
                 inputData[i].collectionId = tableData[i].collectionId;
                 var currentIndex = indexes[i];
-                inputData[i].customerSL = table.cell(currentIndex, 6).nodes().to$().find('input').val();
-                inputData[i].pageNo = table.cell(currentIndex, 7).nodes().to$().find('input').val();
+                inputData[i].pageNo = table.cell(currentIndex, 9).nodes().to$().find('input').val();
+                inputData[i].customerSL = table.cell(currentIndex, 10).nodes().to$().find('input').val();
             }
 
             $.ajax({
@@ -91,10 +91,14 @@ function loadDataTable() {
            { "data": "voucherNo", "autoWidth": true },
             { "data": "customerSerial", "autoWidth": true },
             { "data": "customerName", "autoWidth": true },
+             { "data": "customerPhone", "autoWidth": true },
+              { "data": "fromMonthYear", "autoWidth": true },
+               { "data": "toMonthYear", "autoWidth": true },
             { "data": "rcvAmount", "autoWidth": true },
             { "data": "stringCreatedDate", "autoWidth": true },
+               { "data": null, render: function (data, type, row) { return '<input type="text" class = "form-control" value=' + row.pageNo + '>'; } },
             { "data": null, render: function (data, type, row) { return '<input type="text" class = "form-control" value=' + row.customerSL + '>'; } },
-            { "data": null, render: function (data, type, row) { return '<input type="text" class = "form-control" value=' + row.pageNo + '>'; } }
+
         ],
         columnDefs: [
             {

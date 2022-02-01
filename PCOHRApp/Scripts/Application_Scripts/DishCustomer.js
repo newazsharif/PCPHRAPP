@@ -4,6 +4,11 @@ $(document).ready(function () {
     loadCustomerList();
     $('.customerSerialPrefixDivId').show();
     $('#customerSerialDivId').hide();
+
+    $('#EntryDateDateId').datetimepicker({
+        useCurrent: false,
+        format: 'DD/MM/YYYY'
+    });
 });
 var dropTrigger = 1;
 function loadCustomerList() {
@@ -95,7 +100,7 @@ $('#btnCreateId').click(function () {
     $('#monthBillId').val('0');
     $('#monthBillId').prop('readonly', false);
     $('#othersAmountId').val('0');
-    $('#descriptionId').val('');
+    $("#EntryDateDateId").data("DateTimePicker").date(null);
     $('#connMonthId').val('0');
     $('#connYearId').val('0');
     $('.select2').trigger('change');
@@ -146,7 +151,8 @@ $('#btnSaveId').click(function () {
             connFee: $('#connFeeId').val(),
             monthBill: $('#monthBillId').val(),
             othersAmount: $('#othersAmountId').val(),
-            description: $('#descriptionId').val(),
+            //description: $('#descriptionId').val(),
+            EntryDateString: $('#EntryDateDateId input').val(),
             connMonth: $('#connMonthId').val(),
             connYear: $('#connYearId').val(),
             isActive: true,
@@ -229,7 +235,7 @@ function clearUI() {
     $('#connFeeId').val('0');
     $('#monthBillId').val('0');
     $('#othersAmountId').val('0');
-    $('#descriptionId').val('');
+    $("#EntryDateDateId").data("DateTimePicker").date(null);
     $('#connMonthId').val('0');
     $('#connYearId').val('0');
     $('.select2').trigger('change');
@@ -391,7 +397,15 @@ function EditCustomer(id) {
             $('#monthBillId').prop('readonly', true);
             $('#othersAmountId').val(data.data.othersAmount);
             $('#othersAmountId').prop('readonly', true);
-            $('#descriptionId').val(data.data.description);
+                       
+            if (data.data.EntryDateString != "") {
+                $("#EntryDateDateId").data("DateTimePicker").date(null);
+                $('#EntryDateDateId').data('DateTimePicker').defaultDate(data.data.EntryDateString);
+            } else {
+                
+                $("#EntryDateDateId").data("DateTimePicker").date(null);
+            }
+            
             $('#connMonthId').val(data.data.connMonth);
             $('#connMonthId').select2("enable", false);
             $('#connYearId').val(data.data.connYear);
@@ -401,6 +415,8 @@ function EditCustomer(id) {
             loadHostIdForEdit(data.data.hostId);
             $('.select2').trigger('change')
             $('#btnSaveId').html('<i class="fa fa-check-square-o"></i> Update');
+
+            debugger;
         }
     })
 }

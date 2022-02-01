@@ -47,6 +47,9 @@ namespace PCOHRApp.Models
         public string receivedDateString { get; set; }
         public string Password { get; set; }
         public List<int> billDetailsIds { get; set; }
+        public string  createdByString { get; set; }
+
+       
 
     }
 }

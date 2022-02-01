@@ -29,7 +29,7 @@ namespace PCOHRApp.DA
             zoneList = (from DataRow rdr in dt.Rows
                         select new ZoneVM()
                         {
-                            zoneId = Convert.ToInt16(rdr["zoneId"]),
+                            zoneId = Convert.ToInt32(rdr["zoneId"]),
                             zoneName = rdr["zoneName"].ToString(),
                             isActive = Convert.ToBoolean(rdr["isActive"]),
                         }).ToList();
@@ -66,7 +66,7 @@ namespace PCOHRApp.DA
                 while (rdr.Read())
                 {
 
-                    _obj.zoneId = Convert.ToInt16(rdr["zoneId"]);
+                    _obj.zoneId = Convert.ToInt32(rdr["zoneId"]);
                     _obj.zoneName = rdr["zoneName"].ToString();
                     _obj.isActive = Convert.ToBoolean(rdr["isActive"]);
 

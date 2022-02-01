@@ -31,7 +31,7 @@ namespace PCOHRApp.DA
                         {
                             companyName = rdr["companyName"].ToString(),
                             companyAddress = rdr["companyAddress"].ToString(),
-                            hostId = Convert.ToInt16(rdr["hostId"]),
+                            hostId = Convert.ToInt32(rdr["hostId"]),
                             hostName = rdr["hostName"].ToString(),
                             hostAddress = rdr["hostAddress"].ToString(),
                             hostPhone = rdr["hostPhone"].ToString(),
@@ -73,7 +73,7 @@ namespace PCOHRApp.DA
                 while (rdr.Read())
                 {
 
-                    _obj.hostId = Convert.ToInt16(rdr["hostId"]);
+                    _obj.hostId = Convert.ToInt32(rdr["hostId"]);
                     _obj.hostName = rdr["hostName"].ToString();
                     _obj.hostPhone = rdr["hostPhone"].ToString();
                     _obj.hostAddress = rdr["hostAddress"].ToString();

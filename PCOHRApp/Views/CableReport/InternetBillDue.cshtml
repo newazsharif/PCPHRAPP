@@ -23,7 +23,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="zoneId">Zone</label>
                                     <select class="form-control select2" id="zoneId">
@@ -31,10 +31,40 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-
+                            <div class="col-md-2">
+                                <div class="form-group requiredFormGroup">
+                                    <label for="customerSerialPrefixId">Serial Prefix</label>
+                                    <select class="form-control select2 border-danger" id="customerSerialPrefixId">
+                                        <option value="0">Select</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="assignedUserId requiredFormGroup">Assigned User</label>
+                                    <select class="form-control select2 border-danger" id="assignedUserId">
+                                        <option value="0">Select Assigned Person</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group requiredFormGroup">
+                                    <label for="hostId" class="hostId">Host</label>
+                                    <select class="form-control select2 border-danger" id="hostId">
+                                        <option value="0">Select Host</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group requiredFormGroup">
+                                    <label for="customerSerialPrefixId">Status</label>
+                                    <select class="form-control select2 border-danger" id="statusId">
+                                        <option value="-1">ALL</option>
+                                        <option value="0">Active</option>
+                                        <option value="1">Discontinue</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="row" id="reportId">
 

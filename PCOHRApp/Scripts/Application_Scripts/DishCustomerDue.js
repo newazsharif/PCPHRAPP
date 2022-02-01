@@ -24,13 +24,52 @@ function loadInitialization() {
             data: zones
         });
     });
+
+    var customerSerials = []
+    $.get('/Dropdown/GetCustomerSerialList', function (data) {
+        customerSerials = data.data;
+        $('#customerSerialPrefixId').select2({
+            data: customerSerials
+        });
+    });
+
+    var assignedUsers = []
+    $.get('/Account/GetUserDropdownList', function (data) {
+        assignedUsers = data.data;
+        $('#assignedUserId').select2({
+            data: assignedUsers
+        });
+    });
+
+    var hosts = [];
+    $('#hostId').select2({
+        ajax: {
+            url: '/Host/GetHostListForDropdown',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    page: params.page || 1,
+                    selectedId: 0
+                }
+                return query
+            }
+
+
+        }
+    });
 }
 
 
 function GenerateRDLC(fileType) {
     var zoneId = $('#zoneId').val();
+    var custSerialPrefixId = $('#customerSerialPrefixId').val();
+    var assignedUserId = $('#assignedUserId').val();
+    var hostId = $('#hostId').val();
+    var activeStatus = 1;
+    var dueReportStatus = $('#statusId').val();
+    debugger;
     var reportType = 'DishBillDue';
-    var viewURL = '/CableReport/ShowReport?fileType=' + fileType + '&zoneId=' + zoneId + "&reportType=" + reportType;
+    var viewURL = '/CableReport/ShowReport?fileType=' + fileType + '&zoneId=' + zoneId + '&custSerialPrefixId=' + custSerialPrefixId + '&assignedUserId=' + assignedUserId + '&hostId=' + hostId + "&reportType=" + reportType + '&activeStatus=' + activeStatus + "&dueReportStatus=" + dueReportStatus;
     $.fancybox(
         {
             'title': 'Report Window',

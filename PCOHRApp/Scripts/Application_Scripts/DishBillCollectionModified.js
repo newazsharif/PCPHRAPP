@@ -133,7 +133,10 @@ $('#btnSaveId').click(function () {
     }
 });
 
-
+$("input[name='inlineRadioOptions']").click(function () {
+    clearUI();
+    loadInitialization();
+});
 
 $('#connFeeId,#reConnFeeId,#otherFeeId,#monFeeId,#shiftingFeeId,#discountId,#advanceId').change(function () {
     calculateAmount();
@@ -156,8 +159,8 @@ function clearUI() {
     $('#advanceId').val('0');
     $('#custSLId').val('');
     $('#pageNoId').val('');
-    $('#collectedById').val('0');
-    $('#receivedById').val('0');
+    //$('#collectedById').val('0');
+    //$('#receivedById').val('0');
     $('#customerNameId').val('');
     $('#addressNameId').val('');
     $('#hostNameId').val('');
@@ -165,11 +168,14 @@ function clearUI() {
     $('#assignedUserNameId').val('');
     $('#connectionMonthId').val('');
     $('#monthlyBillId').val('');
+    $('#lblCusAddBillForTop').text('');
+    $('#lblMonthlyBillForTop').text('');
+    $('#lblEntryDateForTop').text('');
     $('#customerId').trigger('change');
     $('#fromMonthId').trigger('change');
     $('#toMonthId').trigger('change');
-    $('#collectedById').trigger('change');
-    $('#receivedById').trigger('change');
+    //$('#collectedById').trigger('change');
+    //$('#receivedById').trigger('change');
     $('#monthlyDueListPanel').empty();
     $('#connFeeDueId').text('');
     $('#reconnFeeDueId').text('');
@@ -222,9 +228,10 @@ function loadInitialization() {
     $('#btnClearId').show();
     $('#btnListId').show();
     $('.customerBillForm').show();
+    //var radioValue = $("input[name='inlineRadioOptions']:checked").val();
     $('#customerId').select2({
         ajax: {
-            url: '/DishCustomer/GetCustomerListForDropdown',
+            url: '/DishCustomer/GetCustomerListForDropdown?searchBy=' + $("input[name='inlineRadioOptions']:checked").val(),
             data: function (params) {
                 var query = {
                     search: params.term,
@@ -289,6 +296,10 @@ function changeCustomer() {
             $('#zoneNameId').val(data.data.zoneName);
             $('#assignedUserNameId').val(data.data.assignedUserName);
             $('#monthlyBillId').val(data.data.monthBill);
+            $('#lblCusAddBillForTop').text(data.data.customerAddress);
+            $('#lblMonthlyBillForTop').text(data.data.monthBill);
+            $('#lblEntryDateForTop').text(data.data.EntryDateString);
+
 
             $('#connectionMonthId').val(data.data.connMonth == '0' ? '' : data.data.connMonth + ',' + (data.data.connYearName == 'null' ? '' : data.data.connYearName));
         });
@@ -306,7 +317,7 @@ function changeCustomer() {
             $.each(data.data, function (k, v) {
                 if (v.requestName === "Reconnect") {
                     $('#reconnFeeDueId').text('Reconn Fee Due : ' + v.transactionAmount);
-                    $('.reConnFeeFormId').show();
+                    $('.reConnFeeFrmId').show();
                 }
                 else if (v.collectionType === "Connection Fee") {
                     $('#connFeeDueId').text('Connection Fee Due : ' + v.transactionAmount);
@@ -329,7 +340,8 @@ function changeCustomer() {
 
             });
             if (totalMonthlyDue != "0") {
-                $('#monthlyFeeDueId').text('Monthly Bill : ' + totalMonthlyDue);
+                //$('#monthlyFeeDueId').text('Monthly Bill : ' + totalMonthlyDue);
+                $('#monthlyFeeDueId').text('Total Month Bill : ' + totalMonthlyDue);
             }
             $('#totalDueId').text(totalDue);
             if (data.data.length > 0) {
@@ -406,7 +418,7 @@ function LoadBillDatatable() {
                 "data": null,
                 "className": "center",
                 render: function (data, type, row) {
-                    return 'SL-' + data.pageNo + '/' + data.customerSL;
+                    return 'SL-' + data.customerSL + '/' + data.pageNo;
                 }
 
             },
@@ -414,14 +426,14 @@ function LoadBillDatatable() {
             { "data": "customerSerial", "autoWidth": true },
             { "data": "customerName", "autoWidth": true },
             { "data": "connFee", "autoWidth": true },
-            { "data": "reConnFee", "autoWidth": true },
+            { "data": "collectedDateString", "autoWidth": true },            
             { "data": "fromMonthYear", "autoWidth": true },
             { "data": "toMonthYear", "autoWidth": true },
             { "data": "monthlyFee", "autoWidth": true },
             { "data": "shiftingCharge", "autoWidth": true },
             { "data": "netAmount", "autoWidth": true },
             { "data": "rcvAmount", "autoWidth": true },
-            { "data": "collectedDateString", "autoWidth": true },
+            { "data": "reConnFee", "autoWidth": true },
         ],
         "serverSide": true,
         "order": [1, "asc"],

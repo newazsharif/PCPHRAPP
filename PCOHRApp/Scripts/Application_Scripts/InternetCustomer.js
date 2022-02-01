@@ -4,6 +4,11 @@ $(document).ready(function () {
     loadCustomerList()
     $('.customerSerialPrefixDivId').show();
     $('#customerSerialDivId').hide();
+
+    $('#EntryDateDateId').datetimepicker({
+        useCurrent: false,
+        format: 'DD/MM/YYYY'
+    });
 });
 var dropTrigger = 1;
 function loadCustomerList() {
@@ -86,6 +91,7 @@ $('#btnCreateId').click(function () {
     $('#phoneNumberId').val('');
     $('#requiredNetId').val('');
     $('#ipAddressId').val('');
+    $('#OnuMCId').val('');
     $('#addressId').val('');
     $('#hostId').val('0');
     $('#hostPhoneId').val('0');
@@ -97,7 +103,7 @@ $('#btnCreateId').click(function () {
     $('#monthBillId').val('0');
     $('#monthBillId').prop('readonly', false);
     $('#othersAmountId').val('0');
-    $('#descriptionId').val('');
+    $("#EntryDateDateId").data("DateTimePicker").date(null);
     $('#connMonthId').val('0');
     $('#connYearId').val('0');
     $('.select2').trigger('change');
@@ -145,13 +151,14 @@ $('#btnSaveId').click(function () {
             customerAddress: $('#addressId').val(),
             requiredNet: $('#requiredNetId').val(),
             ipAddress: $('#ipAddressId').val(),
+            onuMCId: $('#OnuMCId').val(),
             hostId: $('#hostId').val(),
             zoneId: $('#zoneId').val(),
             assignedUserId: $('#assignedUserId').val(),
             connFee: $('#connFeeId').val(),
             monthBill: $('#monthBillId').val(),
             othersAmount: $('#othersAmountId').val(),
-            description: $('#descriptionId').val(),
+            EntryDateString: $('#EntryDateDateId input').val(),
             connMonth: $('#connMonthId').val(),
             connYear: $('#connYearId').val(),
             isActive: true,
@@ -226,6 +233,8 @@ function clearUI() {
     $('#addressId').val('');
     $('#requiredNetId').val('');
     $('#ipAddressId').val('');
+    $('#OnuMCId').val('');
+
     $('#hostId').val('0');
     $('#hostPhoneId').val('0');
     
@@ -234,7 +243,7 @@ function clearUI() {
     $('#connFeeId').val('0');
     $('#monthBillId').val('0');
     $('#othersAmountId').val('0');
-    $('#descriptionId').val('');
+    $("#EntryDateDateId").data("DateTimePicker").date(null);
     $('#connMonthId').val('0');
     $('#connYearId').val('0');
     $('.select2').trigger('change');
@@ -388,6 +397,7 @@ function EditCustomer(id) {
             $('#addressId').val(data.data.customerAddress);
             $('#requiredNetId').val(data.data.requiredNet);
             $('#ipAddressId').val(data.data.ipAddress);
+            $('#OnuMCId').val(data.data.onuMCId);
             $('#hostId').val(data.data.hostId);
             $('#zoneId').val(data.data.zoneId);
             $('#assignedUserId').val(data.data.assignedUserId);
@@ -396,7 +406,15 @@ function EditCustomer(id) {
             $('#monthBillId').val(data.data.monthBill);
             $('#monthBillId').prop('readonly', true);
             $('#othersAmountId').val(data.data.othersAmount);
-            $('#descriptionId').val(data.data.description);
+
+            if (data.data.EntryDateString != "") {
+                $("#EntryDateDateId").data("DateTimePicker").date(null);
+                $('#EntryDateDateId').data('DateTimePicker').defaultDate(data.data.EntryDateString);
+            } else {
+
+                $("#EntryDateDateId").data("DateTimePicker").date(null);
+            }
+
             $('#connMonthId').val(data.data.connMonth);
             $('#connMonthId').select2("enable", false);
             $('#connYearId').val(data.data.connYear);

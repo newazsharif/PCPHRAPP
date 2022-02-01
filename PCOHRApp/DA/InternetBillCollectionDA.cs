@@ -30,6 +30,7 @@ namespace PCOHRApp.DA
             billList = (from DataRow rdr in dt.Rows
                         select new PreviousBillInfoVM()
                         {
+                            billDetailId = Convert.ToInt32(rdr["billDetailId"]),
                             advanceAmount = Convert.ToDecimal(rdr["advanceAmount"]),
                             cid = Convert.ToInt32(rdr["cid"]),
                             collectionType = rdr["collectionType"].ToString(),
@@ -149,7 +150,7 @@ namespace PCOHRApp.DA
                             fromMonthYear = rdr["fromMonthYear"].ToString(),
                             toMonthYear = rdr["toMonthYear"].ToString(),
                             customerName = rdr["customerName"].ToString(),
-                            collectedDateString = rdr["collectedDateString"].ToString()
+                            collectedDateString = rdr["collectedDateString"].ToString(),
                         }).ToList();
             return billList;
         }
@@ -198,7 +199,8 @@ namespace PCOHRApp.DA
                             toMonthYear = rdr["toMonthYear"].ToString(),
                             customerName = rdr["customerName"].ToString(),
                             createdDate = Convert.ToDateTime(rdr["createdDate"]),
-                            stringCreatedDate = rdr["createdDate"].ToString()
+                            stringCreatedDate = rdr["createdDate"].ToString(),
+                            customerPhone = rdr["customerPhone"].ToString()
                         }).ToList();
             return billList;
         }
@@ -328,6 +330,109 @@ namespace PCOHRApp.DA
 
                 throw;
             }
+        }
+
+        internal List<BillCollectionVM> GetPagesByYear(int yearId, int receivedBy)
+        {
+            DataTable dt = new DataTable();
+            List<BillCollectionVM> pageList = new List<BillCollectionVM>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("gsp_getInternetPagesByYear", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@yearId", yearId);
+                cmd.Parameters.AddWithValue("@receivedBy", receivedBy);
+                con.Open();
+                var da = new SqlDataAdapter(cmd);
+                cmd.CommandType = CommandType.StoredProcedure;
+                da.Fill(dt);
+                con.Close();
+            }
+            pageList = (from DataRow rdr in dt.Rows
+                        select new BillCollectionVM()
+                        {
+                            pageNo = rdr["pageNo"].ToString(),
+                        }).ToList();
+            return pageList;
+        }
+
+        public List<BillDelete> GetMonthlyBillDeleteList()
+        {
+            DataTable dt = new DataTable();
+            List<BillDelete> billList = new List<BillDelete>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("sp_GetInternetMonthlyDeleteHis", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                var da = new SqlDataAdapter(cmd);
+                cmd.CommandType = CommandType.StoredProcedure;
+                da.Fill(dt);
+                con.Close();
+            }
+            billList = (from DataRow rdr in dt.Rows
+                        select new BillDelete()
+                        {
+                            Month = rdr["Month"].ToString(),
+                            YearName = rdr["yearName"].ToString(),
+                            CustomerSerial = rdr["customerSerial"].ToString(),
+                            CustomerName = rdr["customerName"].ToString(),
+                            CustomerPhone = rdr["customerPhone"].ToString(),
+                            CustomerAddress = rdr["customerAddress"].ToString(),
+                            DeletedBy = rdr["DeletedBy"].ToString(),
+                            DeletedDate = rdr["DeletedDate"].ToString(),
+                            BillAmount = Convert.ToDecimal(rdr["BillAMount"]),
+                            
+                        }).ToList();
+            return billList;
+        }
+
+        public List<BillCollectionVM> GetBillCollectionListBySerial(string pageNo, string serialNo, int yearID)
+        {
+            DataTable dt = new DataTable();
+            List<BillCollectionVM> billList = new List<BillCollectionVM>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("gsp_getInternetBillCollectionsBySeriaNo", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@YearId", yearID);
+                cmd.Parameters.AddWithValue("@PageNo", pageNo);
+                cmd.Parameters.AddWithValue("@SerialNo", serialNo);
+                con.Open();
+                var da = new SqlDataAdapter(cmd);
+                cmd.CommandType = CommandType.StoredProcedure;
+                da.Fill(dt);
+                con.Close();
+            }
+            billList = (from DataRow rdr in dt.Rows
+                        select new BillCollectionVM()
+                        {
+                            voucherNo = rdr["voucherNo"].ToString(),
+                            adjustAdvance = Convert.ToDecimal(rdr["adjustAdvance"]),
+                            cid = Convert.ToInt32(rdr["cid"]),
+                            collectionId = Convert.ToInt32(rdr["collectionId"]),
+                            connFee = Convert.ToDecimal(rdr["connFee"]),
+                            customerSerial = rdr["customerSerial"].ToString(),
+                            customerSL = rdr["customerSL"].ToString(),
+                            description = rdr["description"].ToString(),
+                            fromMonth = rdr["fromMonth"].ToString(),
+                            monthlyFee = Convert.ToDecimal(rdr["monthlyFee"]),
+                            netAmount = Convert.ToDecimal(rdr["netAmount"]),
+                            othersAmount = Convert.ToDecimal(rdr["othersAmount"]),
+                            pageNo = rdr["pageNo"].ToString(),
+                            rcvAmount = Convert.ToDecimal(rdr["rcvAmount"]),
+                            reConnFee = Convert.ToDecimal(rdr["reConnFee"]),
+                            shiftingCharge = Convert.ToDecimal(rdr["shiftingCharge"]),
+                            toMonth = rdr["toMonth"].ToString(),
+                            fromMonthYear = rdr["fromMonthYear"].ToString(),
+                            toMonthYear = rdr["toMonthYear"].ToString(),
+                            customerName = rdr["customerName"].ToString(),
+                            collectedDateString = rdr["collectedDateString"].ToString(),
+                            collectedByString = rdr["collectedBy"].ToString(),
+                            receivedByString = rdr["receivedBy"].ToString(),
+                            createdByString = rdr["createdBy"].ToString(),
+                        }).ToList();
+            return billList;
         }
     }
 }

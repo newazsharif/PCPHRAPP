@@ -3,10 +3,10 @@
         <div class="card-body">
             @Html.Partial("~/Views/Shared/_MessageBox.cshtml")
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <h4><i class="ft-zoom-in"></i> Internet Bill Collection</h4>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <button type="button" class="btn btn-warning pull-right menuBtn" id="btnClearId">
                         <i class="ft-x"></i> Clear
                     </button>
@@ -28,10 +28,46 @@
                         </button>*@
                 </div>
             </div>
-            <div class="row customerBillForm">
+            <div class="row customerBillForm" style="padding-top:10px;">
+                <div class="col-md-5">
+                    <div class="form-group" style="color:white;font-weight:bold">
+                        Address : <label style="color: yellow !important; font-weight: bold !important;" id="lblCusAddBillForTop"></label>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group" style="color: white; font-weight: bold">
+                        Monthly Bill : <label style="color: yellow !important; font-weight: bold !important;" id="lblMonthlyBillForTop"></label>
+                    </div>
+                </div>
+                <div class="col-md-2" style="padding-left:0px;">
+                    <div class="form-group" style="color: white; font-weight: bold">
+                        Entry Date : <label style="color: yellow !important; font-weight: bold !important;" id="lblEntryDateForTop"></label>
+                    </div>
+                </div>
                 <div class="col-md-3">
+                    <div class="form-group" style="color: white; font-weight: bold">
+                        Onu-MC : <label style="color: yellow !important; font-weight: bold !important;" id="lblOnuMacForTop"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row customerBillForm">
+                <div class="col-md-5">
                     <div class="form-group requiredFormGroup">
                         <label for="customerId">Customer</label>
+                        (
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" checked value="Card">
+                            <label class="form-check-label" for="inlineRadio1">Card</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Mobile">
+                            <label class="form-check-label" for="inlineRadio2">Mobile</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Name">
+                            <label class="form-check-label" for="inlineRadio3">Name</label>
+                        </div>)
                         <select class="form-control select2 border-danger" id="customerId" onchange="changeCustomer()">
                             <option value="0" min="0">Select Customer</option>
                         </select>
@@ -218,14 +254,14 @@
                             <th>CardNo</th>
                             <th>Name</th>
                             <th>ConFee</th>
-                            <th>ReConFee</th>
+                            <th>CollDate</th>                            
                             <th>From</th>
                             <th>To</th>
                             <th>MonthlyFee</th>
                             <th>SftFee</th>
                             <th>NetAmt</th>
                             <th>RcvAmt</th>
-                            <th>CollDate</th>
+                            <th>ReConFee</th>
                         </tr>
                     </thead>
                 </table>

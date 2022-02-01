@@ -126,6 +126,8 @@
     <Compile Include="Controllers\DishBillGenerateController.cs" />
     <Compile Include="Controllers\DishBillCollectionController.cs" />
     <Compile Include="Controllers\DishMonthlyBillDeleteController.cs" />
+    <Compile Include="Controllers\InternetSerialNoWiseTranController.cs" />
+    <Compile Include="Controllers\DishSerialNoWiseTranController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
     <Compile Include="Controllers\HouseCustomerController.cs" />
     <Compile Include="Controllers\InternetBillCollectionController.cs" />
@@ -140,6 +142,8 @@
     <Compile Include="Controllers\InternetCustomerDeleteController.cs" />
     <Compile Include="Controllers\InternetCustomerRequestController.cs" />
     <Compile Include="Controllers\InternetMonthlyBillDeleteController.cs" />
+    <Compile Include="Controllers\DishMonthlyBillDeleteListController.cs" />
+    <Compile Include="Controllers\InternetMonthlyBillDeleteListController.cs" />
     <Compile Include="Controllers\LordInfoController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ZoneController.cs" />
@@ -172,6 +176,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BillCollectionVM.cs" />
+    <Compile Include="Models\BillDelete.cs" />
     <Compile Include="Models\BillGenerateVM.cs" />
     <Compile Include="Models\CareTakerVM.cs" />
     <Compile Include="Models\CustomerRequestTypeVM.cs" />
@@ -210,8 +215,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\jquery.dataTables.css" />
-    <Content Include="Content\SeatChart\assets\icons\bin.svg" />
-    <Content Include="Content\SeatChart\assets\icons\shoppingcart.svg" />
     <Content Include="Content\SeatChart\css\seatchart.css" />
     <Content Include="Content\SeatChart\js\seatchart.js" />
     <Content Include="Content\select.dataTables.min.css" />
@@ -1508,24 +1511,17 @@
     <Content Include="Content\Theme\app-assets\images\gallery\9.jpg" />
     <Content Include="Content\Theme\app-assets\images\icons\browser.png" />
     <Content Include="Content\Theme\app-assets\images\icons\chrome.png" />
-    <Content Include="Content\Theme\app-assets\images\icons\error.png" />
-    <Content Include="Content\Theme\app-assets\images\icons\error.svg" />
     <Content Include="Content\Theme\app-assets\images\icons\firefox.png" />
     <Content Include="Content\Theme\app-assets\images\icons\ie.png" />
     <Content Include="Content\Theme\app-assets\images\icons\img.png" />
     <Content Include="Content\Theme\app-assets\images\icons\loading.gif" />
     <Content Include="Content\Theme\app-assets\images\icons\opera.png" />
-    <Content Include="Content\Theme\app-assets\images\icons\play-pause.png" />
-    <Content Include="Content\Theme\app-assets\images\icons\play-pause.svg" />
-    <Content Include="Content\Theme\app-assets\images\icons\progressbar.gif" />
     <Content Include="Content\Theme\app-assets\images\icons\repo-forked.png" />
     <Content Include="Content\Theme\app-assets\images\icons\repo-source.png" />
     <Content Include="Content\Theme\app-assets\images\icons\safari.png" />
     <Content Include="Content\Theme\app-assets\images\icons\spinner.gif" />
     <Content Include="Content\Theme\app-assets\images\icons\textarea-expand.png" />
     <Content Include="Content\Theme\app-assets\images\icons\thumbs-up.jpg" />
-    <Content Include="Content\Theme\app-assets\images\icons\video-play.png" />
-    <Content Include="Content\Theme\app-assets\images\icons\video-play.svg" />
     <Content Include="Content\Theme\app-assets\images\ico\apple-icon-120.png" />
     <Content Include="Content\Theme\app-assets\images\ico\apple-icon-152.png" />
     <Content Include="Content\Theme\app-assets\images\ico\apple-icon-60.png" />
@@ -2576,9 +2572,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Application_Scripts\DataBaseBackUp.js" />
+    <Content Include="Scripts\Application_Scripts\InternetSerialNoWiseTrans.js" />
+    <Content Include="Scripts\Application_Scripts\DishSerialNoWiseTrans.js" />
     <Content Include="Scripts\Application_Scripts\DishConnectionDateModify.js" />
     <Content Include="Scripts\Application_Scripts\DishCustomerDelete.js" />
     <Content Include="Scripts\Application_Scripts\DishMonthlyBillDelete.js" />
+    <Content Include="Scripts\Application_Scripts\DishMonthlyBillDeleteList.js" />
+    <Content Include="Scripts\Application_Scripts\InternetMonthlyBillDeleteList.js" />
     <Content Include="Scripts\Application_Scripts\InternetCollectionPageWise.js" />
     <Content Include="Scripts\Application_Scripts\DishCollectionPageWise.js" />
     <Content Include="Scripts\Application_Scripts\AllInternetCollectionDetails.js" />
@@ -3027,7 +3027,9 @@
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\CableReport\ReportViewer.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -3097,9 +3099,14 @@
     <Content Include="Views\BackUp\Index.cshtml" />
     <Content Include="Views\DishCustomerDelete\Index.cshtml" />
     <Content Include="Views\InternetCustomerDelete\Index.cshtml" />
+    <Content Include="Views\InternetMonthlyBillDeleteList\Index.cshtml" />
+    <Content Include="Views\DishMonthlyBillDeleteList\Index.cshtml" />
+    <Content Include="Views\DishSerialNoWiseTran\Index.cshtml" />
+    <Content Include="Views\InternetSerialNoWiseTran\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\SeatChart\assets\icons\" />
     <Folder Include="Views\Designation\" />
     <Folder Include="Views\Dropdown\" />
   </ItemGroup>
@@ -3107,7 +3114,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>

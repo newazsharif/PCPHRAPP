@@ -37,6 +37,7 @@ namespace PCOHRApp.DA
                 cmd.Parameters.AddWithValue("@connYear", _obj.connYear);
                 cmd.Parameters.AddWithValue("@isActive", _obj.isActive);
                 cmd.Parameters.AddWithValue("@createdBy", _obj.createdBy);
+                cmd.Parameters.AddWithValue("@EntryDate", _obj.EntryDate);
 
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -129,7 +130,7 @@ namespace PCOHRApp.DA
                     _obj.connYear = Convert.ToInt32(rdr["connYear"]);
                     _obj.connYearName = rdr["connYearName"].ToString();
                     _obj.isActive = Convert.ToBoolean(rdr["isActive"]);
-
+                    _obj.EntryDateString = rdr["EntryDateString"].ToString();
                 }
                 con.Close();
             }
